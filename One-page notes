@@ -1,0 +1,125 @@
+single-page scraps:
+
+head needs css file (use tag id or name to specify that only the singular pioneer is changed by the css)
+
+client side page makes AJAX request and recieves json objects from server
+
+possibly create a method that combines data of image and results from database in one object
+
+document.createElement('ELEMENT TAG');
+
+use 'onClick' event to enable reaction to clicking on an image: Note an AJAX request MUST be
+made on click, storing the full data and hiding it is not an option.
+
+Browserify: tool to build single javascript file from several modules (will not be needed)
+'bundle'-> appends all files together
+
+use 'div' with 'children' to contain image with title etc.
+document.'tag'.appendChild(name);
+
+Element Tags: anchor 'a', divider 'div' image 'img', text 'txt'
+
+latter alternatives (not recommended)
+
+form 'methods' of potential use
+formData.append() -> alternative method of putting together page or getting info to page (check online coding details)
+EventTarget.addEventListener()
+
+
+(form?)   --> .serialize()//turns form into string
+
+
+jQuery loader to put in html body:
+<script
+src="https://code.jquery.com/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+
+
+server code sample
+
+var image=require('./src/resource/image');
+router.get('/images',function(req,res){image.list(req,res)});
+router.post('/images',function(req,res){project.create(req,res)});
+router.get('/images/:id',function(req,res){project.read(req,res)});
+router.post('/images/:id',function(req,res){project.update(req,res)});
+router.get('/images/:id/destroy',function(req,res){project.destroy(req,res)});
+
+image src: url path that would make the server 'serve' an image: path will be via
+router
+
+due to the ':' in /:id already being built to signify a token, use /:'filename'
+to capture the filename in the request parameters
+
+button.addEventListener('click', eventHandler);//use  to control form submission
+
+Use multipart on server side to handle input image
+use javascript from scrumtastic project to work multipart (may need jQuery set up)
+
+
+//jQuery code:
+function loadIndex(){
+  $.get('/projects',function(projects,status){
+    if(status=="success"){
+      $('body').clear();
+      projects.forEach(function(project){
+        var link = $('a').
+        .text(project.name);
+        attr('href','/projects'+project.id);
+        .on('click',function(e){
+          e.preventDefault();
+          loadProject('/projects/'+project.id);
+        }).appendTo('body');
+      });
+      $('<button>').text('Add Project').on('click',function(){
+        //add form to the page
+        $('body').load('/public/project-form.html'function(){);
+        //Override defaultForm action
+          $('form').on('submit',function(event){
+            event.preventDefault();
+            var data=$new FormData($('form')[0]);//need array element to ensure grabbing the first form
+            $.post({
+              url: '/projects',
+              data: data,
+              contentType: 'multipart/form-data'
+              processData: false
+            });
+          }
+        })
+      }).appendTo('body');
+    }
+  });
+}
+
+npm install browserify --save-dev
+or
+npm install -g browserify --save-dev
+browserify client/app.js -o public/scrumtastic.js (in command line);
+if above doesn't work use:
+node_modules client/app.js -o public/scrumtastic.js (in command line);
+
+note the above app.js and scrumtastic is the more recent version of the online
+app.js and project.js are in a client folder separate from the rest
+
+watchify: browserify but it watches the file for changes to dependencies
+
+
+User authentication
+
+HTTP Auth:
+Header
+  Authentication: Basic; username:password(base 64 encoded)
+
+  base64 too close to being plain text for security
+
+  'Digest' hash or otherwise encode password
+
+  making stateless http operate with states: cookies
+  when request made to site matching cookie header, cookie is sent alongside request
+  cookie contains relevant data (text form);
+  cookie usually limited to 4k (minimum, many browsers support more)
+  expiration date: defines the duration a cookie is stored
+
+  cookies usually store a key which matches up to a key in a server database
+
+  
